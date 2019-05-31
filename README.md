@@ -12,3 +12,9 @@ File descriptions (ipynb):
 - coSingleview.ipynb: trains and tests a co-training with single-view method for binary sleep/wake classification.
 - supervisedMultiview.ipynb: trains and tests a supervised multi-view method for binary sleep/wake classification.
 - supervisedMultiviewClustering.ipynb: trains and tests a supervised multi-view with clustering method for binary sleep/wake classification.
+
+
+
+Data format:
+
+- Raw accelerometer data: should include x-, y-, and z-values from two tri-axial accelerometer sensors. 
