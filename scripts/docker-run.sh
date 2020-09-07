@@ -11,6 +11,7 @@ while true; do
         -i | --image ) HUNT4_SLEEP_IMAGE=$2; shift; shift; continue ;;
         -d | --dir-user ) HUNT4_SLEEP_DIR_USER=$2; shift; shift; continue ;;
         --mount-notebooks ) HUNT4_SLEEP_MOUNT_NOTEBOOKS=1; shift; continue ;;
+        --as-root ) HUNT4_SLEEP_AS_ROOT=1; shift; continue ;;
     esac
     break
 done
@@ -21,9 +22,18 @@ data_labelled=${HUNT4_SLEEP_DATA_LABELLED:-'/data/hunt4/sleep-labelled-dataset'}
 data_semi_supervised=${HUNT4_SLEEP_DATA_SEMI_SUPERVISED:-'/data/hunt4/sleep-semi-supervised-dataset'}
 dir_user=${HUNT4_SLEEP_DIR_USER:-"$DIR/../user"}
 
+# Optionally mount notebooks
 if [ "$HUNT4_SLEEP_MOUNT_NOTEBOOKS" == "1" ]
 then
   mount_notebooks="-v $DIR/../notebooks:/hunt4_sleep/notebooks"
+fi
+
+# Optionally run as root
+if [ "$HUNT4_SLEEP_AS_ROOT" == "1" ]
+then
+    user_id_env=""
+else
+    user_id_env="--env USER_ID=$(id -u)"
 fi
 
 # Begin building command
@@ -32,7 +42,7 @@ docker_command="docker run --rm -it
     $mount_notebooks
     -v $data_labelled:/hunt4_sleep/data/labelled:ro
     -v $data_semi_supervised:/hunt4_sleep/data/semi_supervised:ro
-    --env USER_ID=$(id -u)
+    $user_id_env
     $image"
 # echo $docker_command $@
 $docker_command $@
