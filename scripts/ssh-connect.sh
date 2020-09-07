@@ -37,6 +37,8 @@ else
     user=$HUNT4_SLEEP_USER
 fi
 
+image=${HUNT4_SLEEP_IMAGE:-"$user/sleep"}
+
 # Build abs path to user dir
 script="import os; print(os.path.join('/lhome/$user', '$dir_user'))"
 abs_dir_user=$(python -c "$script")
